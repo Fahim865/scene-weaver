@@ -123,7 +123,6 @@ export async function exportVideo({
 
   let stage: ExportProgress["stage"] = "trimming";
   let stageIndex = 0;
-  let stageCount = 1;
   const currentStage = (fraction: number): ExportProgress => {
     const total = clips.length + 2 + (audioTrack ? 1 : 0);
     const done = stageIndex + fraction;
@@ -140,8 +139,6 @@ export async function exportVideo({
               : "Burning subtitles",
     };
   };
-  void stageCount;
-
   ffmpeg.on("progress", listener);
 
   const written: string[] = [];
