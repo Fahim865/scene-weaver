@@ -30,7 +30,7 @@ This project runs on TanStack Start + React + Tailwind rather than Next.js, and 
 - **Export pipeline** (in a helper module, client-only):
   1. Write each input file into FFmpeg's virtual FS.
   2. Normalize + trim each clip to a common format (`-ss/-to`, scale to 1920x1080 with pad, 30fps, yuv420p, aac 48k) so concat is safe with mixed sources.
-  3Concat via the concat demuxer file list.
+  3. Concat via the concat demuxer file list.
   4. If an audio track exists: `amix`/`volume` filters to blend original audio with the track at the chosen levels.
   5. Generate an SRT from `subtitles[]` and burn with the `subtitles` filter.
   6. Read the output, build a Blob URL, offer download and load it back into the player.
