@@ -70,7 +70,7 @@ export const clipLength = (clip: Clip) => Math.max(0, clip.trimEnd - clip.trimSt
 
 export const totalDuration = (clips: Clip[]) => clips.reduce((sum, clip) => sum + clipLength(clip), 0);
 
-export const useEditorStore = create<EditorState>((set, get) => ({
+export const useEditorStore = create<EditorState>((set) => ({
   clips: [],
   subtitles: [],
   audioTrack: null,
@@ -127,7 +127,6 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       ].sort((a, b) => a.start - b.start),
       selection: { kind: "subtitle", id },
     }));
-    return void get();
   },
 
   updateSubtitle: (id, patch) =>
