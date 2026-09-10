@@ -112,7 +112,7 @@ export const useEditorStore = create<EditorState>((set) => ({
       const to = state.clips.findIndex((c) => c.id === toId);
       if (from === -1 || to === -1 || from === to) return state;
       const clips = [...state.clips];
-      const [moved] = clips.splice(from, 1);
+      const moved = clips.splice(from, 1)[0]!;
       clips.splice(to, 0, moved);
       return { clips };
     }),
@@ -121,10 +121,10 @@ export const useEditorStore = create<EditorState>((set) => ({
     const id = newId();
     const end = Math.max(start + 2, 2);
     set((state) => ({
-      subtitles: [
+      subtitles: ([
         ...state.subtitles,
         { id, text: "New subtitle", start, end, position: "bottom", size: 42 },
-      ].sort((a, b) => a.start - b.start),
+      ] as Subtitle[]).sort((a, b) => a.start - b.start),
       selection: { kind: "subtitle", id },
     }));
   },
