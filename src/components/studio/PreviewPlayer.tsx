@@ -40,7 +40,7 @@ export function PreviewPlayer({
   const activeIndex = useMemo(() => {
     if (clips.length === 0) return -1;
     for (let i = clips.length - 1; i >= 0; i--) {
-      if (time >= offsets[i] - 0.0001) return i;
+      if (time >= offsets[i]! - 0.0001) return i;
     }
     return 0;
   }, [clips, offsets, time]);
@@ -51,7 +51,7 @@ export function PreviewPlayer({
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !activeClip) return;
-    const localTime = activeClip.trimStart + (time - offsets[activeIndex]);
+    const localTime = activeClip.trimStart + (time - offsets[activeIndex]!);
     if (loadedSrc !== activeClip.url) {
       video.src = activeClip.url;
       setLoadedSrc(activeClip.url);
@@ -89,7 +89,7 @@ export function PreviewPlayer({
     if (video && activeClip) {
       const local = video.currentTime;
       if (local >= activeClip.trimEnd - 0.03) {
-        const next = offsets[activeIndex] + clipLength(activeClip);
+        const next = offsets[activeIndex]! + clipLength(activeClip);
         if (activeIndex >= clips.length - 1) {
           onPlayingChange(false);
           onTimeChange(total);
@@ -97,7 +97,7 @@ export function PreviewPlayer({
           onTimeChange(next + 0.001);
         }
       } else {
-        onTimeChange(offsets[activeIndex] + Math.max(0, local - activeClip.trimStart));
+        onTimeChange(offsets[activeIndex]! + Math.max(0, local - activeClip.trimStart));
       }
     }
     frame.current = requestAnimationFrame(tick);
@@ -180,9 +180,9 @@ export function PreviewPlayer({
           value={[Math.min(time, total)]}
           max={Math.max(total, 0.1)}
           step={0.01}
-          onValueChange={([value]) => {
+          onValueChange={(values) => {
             onPlayingChange(false);
-            onTimeChange(value);
+            onTimeChange(values[0] ?? 0);
           }}
           className="flex-1"
           aria-label="Scrub timeline"

@@ -153,12 +153,12 @@ export async function exportVideo({
     const parts: string[] = [];
 
     for (let i = 0; i < clips.length; i++) {
-      const clip = clips[i];
+      const clip = clips[i]!;
       stage = "trimming";
       stageIndex = i;
       onProgress(currentStage(0));
 
-      const ext = clip.name.includes(".") ? clip.name.split(".").pop() : "mp4";
+      const ext = (clip.name.includes(".") ? clip.name.split(".").pop() : "mp4") ?? "mp4";
       const input = `in_${i}.${ext}`;
       const output = `part_${i}.mp4`;
       await ffmpeg.writeFile(input, await fetchFile(clip.file ?? clip.url));
@@ -235,7 +235,7 @@ export async function exportVideo({
     stageIndex = clips.length;
     onProgress(currentStage(0));
 
-    let current = parts[0];
+    let current = parts[0]!;
     if (parts.length > 1) {
       const list = parts.map((name) => `file '${name}'`).join("\n");
       await ffmpeg.writeFile("list.txt", new TextEncoder().encode(list));
@@ -261,7 +261,7 @@ export async function exportVideo({
       stageIndex = clips.length + 1;
       onProgress(currentStage(0));
 
-      const ext = audioTrack.name.includes(".") ? audioTrack.name.split(".").pop() : "mp3";
+      const ext = (audioTrack.name.includes(".") ? audioTrack.name.split(".").pop() : "mp3") ?? "mp3";
       const trackFile = `track.${ext}`;
       await ffmpeg.writeFile(trackFile, await fetchFile(audioTrack.file ?? audioTrack.url));
       written.push(trackFile);

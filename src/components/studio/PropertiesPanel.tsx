@@ -139,7 +139,7 @@ export function PropertiesPanel() {
               min={18}
               max={120}
               step={2}
-              onValueChange={([value]) => updateSubtitle(subtitle.id, { size: value })}
+              onValueChange={(values) => updateSubtitle(subtitle.id, { size: values[0] ?? 42 })}
             />
           </div>
           <Button
@@ -172,7 +172,7 @@ export function PropertiesPanel() {
               min={0}
               max={1.5}
               step={0.05}
-              onValueChange={([value]) => updateAudioTrack({ volume: value })}
+              onValueChange={(values) => updateAudioTrack({ volume: values[0] ?? 1 })}
             />
           </div>
           <div className="space-y-2">
@@ -184,7 +184,7 @@ export function PropertiesPanel() {
               min={0}
               max={1.5}
               step={0.05}
-              onValueChange={([value]) => updateAudioTrack({ clipVolume: value })}
+              onValueChange={(values) => updateAudioTrack({ clipVolume: values[0] ?? 0.3 })}
             />
           </div>
         </div>
