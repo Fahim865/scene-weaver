@@ -120,7 +120,7 @@ export function PreviewPlayer({
 
   return (
     <div className="flex h-full flex-col gap-3 p-4">
-      <div className="relative flex-1 overflow-hidden rounded-xl border border-border bg-black">
+      <div className="@container relative flex-1 overflow-hidden rounded-xl border border-border bg-black">
         <video ref={videoRef} playsInline className="size-full object-contain" />
         {!activeClip && (
           <div className="absolute inset-0 flex items-center justify-center text-sm text-muted-foreground">
