@@ -5,7 +5,9 @@ import type { AudioTrack, Clip, Subtitle } from "./editor-store";
  * dynamic import from an event handler — never at module scope in a route.
  */
 
-const CORE_BASE = "https://unpkg.com/@ffmpeg/core@0.12.10/dist/umd";
+import wasmAsset from "@/assets/ffmpeg-core.wasm.asset.json";
+
+const CORE_URL = "/ffmpeg/ffmpeg-core.js";
 
 type FFmpegInstance = import("@ffmpeg/ffmpeg").FFmpeg;
 
@@ -20,8 +22,8 @@ async function getFFmpeg(): Promise<FFmpegInstance> {
       ]);
       const ffmpeg = new FFmpeg();
       await ffmpeg.load({
-        coreURL: await toBlobURL(`${CORE_BASE}/ffmpeg-core.js`, "text/javascript"),
-        wasmURL: await toBlobURL(`${CORE_BASE}/ffmpeg-core.wasm`, "application/wasm"),
+        coreURL: await toBlobURL(CORE_URL, "text/javascript"),
+        wasmURL: new URL(wasmAsset.url, window.location.origin).href,
       });
       return ffmpeg;
     })().catch((error) => {
