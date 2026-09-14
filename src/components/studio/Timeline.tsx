@@ -18,7 +18,13 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripHorizontal, Type } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { clipLength, formatTime, totalDuration, useEditorStore, type Clip } from "@/lib/editor-store";
+import {
+  clipLength,
+  formatTime,
+  totalDuration,
+  useEditorStore,
+  type Clip,
+} from "@/lib/editor-store";
 
 const PIXELS_PER_SECOND = 46;
 
@@ -73,7 +79,9 @@ function ClipCard({ clip, index }: { clip: Clip; index: number }) {
         <span className="truncate text-xs font-medium text-foreground">
           {index + 1}. {clip.name}
         </span>
-        <span className="font-mono text-[10px] text-muted-foreground">{formatTime(clipLength(clip))}</span>
+        <span className="font-mono text-[10px] text-muted-foreground">
+          {formatTime(clipLength(clip))}
+        </span>
       </button>
 
       <div
@@ -140,14 +148,24 @@ export function Timeline({ time, onSeek }: { time: number; onSeek: (time: number
   return (
     <div className="flex flex-col gap-2 border-t border-border bg-card/40 p-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Timeline</h2>
-        <Button variant="secondary" size="sm" onClick={() => addSubtitle(time)} disabled={clips.length === 0}>
+        <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+          Timeline
+        </h2>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => addSubtitle(time)}
+          disabled={clips.length === 0}
+        >
           <Type className="size-3.5" /> Add subtitle here
         </Button>
       </div>
 
       <div className="relative overflow-x-auto pb-1">
-        <div className="relative min-w-full" style={{ width: Math.max(total * PIXELS_PER_SECOND, 100) }}>
+        <div
+          className="relative min-w-full"
+          style={{ width: Math.max(total * PIXELS_PER_SECOND, 100) }}
+        >
           <div
             className="pointer-events-none absolute -top-1 bottom-0 z-20 w-px bg-primary"
             style={{ left: Math.min(time, total) * PIXELS_PER_SECOND }}
@@ -156,7 +174,10 @@ export function Timeline({ time, onSeek }: { time: number; onSeek: (time: number
           </div>
 
           <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-            <SortableContext items={clips.map((c) => c.id)} strategy={horizontalListSortingStrategy}>
+            <SortableContext
+              items={clips.map((c) => c.id)}
+              strategy={horizontalListSortingStrategy}
+            >
               <div className="flex items-stretch gap-1">
                 {clips.map((clip, index) => (
                   <ClipCard key={clip.id} clip={clip} index={index} />
@@ -183,7 +204,9 @@ export function Timeline({ time, onSeek }: { time: number; onSeek: (time: number
                   }}
                   title={sub.text}
                   className={`absolute top-1 h-6 overflow-hidden rounded px-2 text-left text-[10px] ${
-                    active ? "bg-primary text-primary-foreground" : "bg-accent text-accent-foreground"
+                    active
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-accent text-accent-foreground"
                   }`}
                   style={{
                     left: sub.start * PIXELS_PER_SECOND,

@@ -5,7 +5,9 @@ import type { AudioTrack, Clip, Subtitle } from "./editor-store";
  * dynamic import from an event handler — never at module scope in a route.
  */
 
-const CORE_BASE = "https://unpkg.com/@ffmpeg/core@0.12.10/dist/umd";
+import wasmAsset from "@/assets/ffmpeg-core.wasm.asset.json";
+
+const CORE_URL = "/ffmpeg/ffmpeg-core.js";
 
 type FFmpegInstance = import("@ffmpeg/ffmpeg").FFmpeg;
 
@@ -20,8 +22,10 @@ async function getFFmpeg(): Promise<FFmpegInstance> {
       ]);
       const ffmpeg = new FFmpeg();
       await ffmpeg.load({
-        coreURL: await toBlobURL(`${CORE_BASE}/ffmpeg-core.js`, "text/javascript"),
-        wasmURL: await toBlobURL(`${CORE_BASE}/ffmpeg-core.wasm`, "application/wasm"),
+        // The worker is a module worker, so the ESM core is imported from a
+        // blob URL (a bundler-safe URL the dev server does not try to resolve).
+        coreURL: await toBlobURL(CORE_URL, "text/javascript"),
+        wasmURL: new URL(wasmAsset.url, window.location.origin).href,
       });
       return ffmpeg;
     })().catch((error) => {
@@ -61,9 +65,7 @@ export function buildAssFile(subtitles: Subtitle[]) {
       );
     }
     const text = sub.text.replace(/\r?\n/g, "\\N").replace(/[{}]/g, "");
-    events.push(
-      `Dialogue: 0,${assTime(sub.start)},${assTime(sub.end)},${name},,0,0,0,,${text}`,
-    );
+    events.push(`Dialogue: 0,${assTime(sub.start)},${assTime(sub.end)},${name},,0,0,0,,${text}`);
   }
 
   return [
@@ -165,14 +167,7 @@ export async function exportVideo({
       written.push(input);
 
       const duration = Math.max(0.1, clip.trimEnd - clip.trimStart);
-      const base = [
-        "-ss",
-        clip.trimStart.toFixed(3),
-        "-t",
-        duration.toFixed(3),
-        "-i",
-        input,
-      ];
+      const base = ["-ss", clip.trimStart.toFixed(3), "-t", duration.toFixed(3), "-i", input];
       const encode = [
         "-c:v",
         "libx264",
@@ -261,7 +256,8 @@ export async function exportVideo({
       stageIndex = clips.length + 1;
       onProgress(currentStage(0));
 
-      const ext = (audioTrack.name.includes(".") ? audioTrack.name.split(".").pop() : "mp3") ?? "mp3";
+      const ext =
+        (audioTrack.name.includes(".") ? audioTrack.name.split(".").pop() : "mp3") ?? "mp3";
       const trackFile = `track.${ext}`;
       await ffmpeg.writeFile(trackFile, await fetchFile(audioTrack.file ?? audioTrack.url));
       written.push(trackFile);
@@ -289,7 +285,9 @@ export async function exportVideo({
         written.push("mixed.mp4");
         current = "mixed.mp4";
       } else {
-        warnings.push("The extra audio track could not be mixed in, so the export keeps the original clip sound.");
+        warnings.push(
+          "The extra audio track could not be mixed in, so the export keeps the original clip sound.",
+        );
       }
     }
 
@@ -319,7 +317,9 @@ export async function exportVideo({
         written.push("subbed.mp4");
         current = "subbed.mp4";
       } else {
-        warnings.push("Subtitles could not be burned into the file, but they still show in the preview.");
+        warnings.push(
+          "Subtitles could not be burned into the file, but they still show in the preview.",
+        );
       }
     }
 

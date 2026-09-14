@@ -29,10 +29,14 @@ export function ExportBar() {
         clips,
         subtitles,
         audioTrack,
-        onProgress: ({ stage, progress, message }) =>
-          setExportState({ stage, progress, message }),
+        onProgress: ({ stage, progress, message }) => setExportState({ stage, progress, message }),
       });
-      setExportState({ stage: "done", progress: 100, message: "Your video is ready", outputUrl: url });
+      setExportState({
+        stage: "done",
+        progress: 100,
+        message: "Your video is ready",
+        outputUrl: url,
+      });
       warnings.forEach((warning) => toast.warning(warning));
       toast.success("Export finished — download it below.");
     } catch (error) {
@@ -51,8 +55,8 @@ export function ExportBar() {
       <div className="mr-auto">
         <h1 className="text-base font-semibold tracking-tight text-foreground">AutoVid Studio</h1>
         <p className="text-xs text-muted-foreground">
-          {clips.length} {clips.length === 1 ? "scene" : "scenes"} · {totalDuration(clips).toFixed(1)}s ·
-          everything renders in your browser
+          {clips.length} {clips.length === 1 ? "scene" : "scenes"} ·{" "}
+          {totalDuration(clips).toFixed(1)}s · everything renders in your browser
         </p>
       </div>
 

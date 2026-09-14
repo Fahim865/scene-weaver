@@ -71,7 +71,9 @@ export function MediaBin() {
   return (
     <div className="flex h-full flex-col gap-4 border-r border-border bg-card/40 p-4">
       <div>
-        <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Media</h2>
+        <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+          Media
+        </h2>
         <p className="mt-1 text-xs text-muted-foreground">Videos stay on your device.</p>
       </div>
 
@@ -111,7 +113,13 @@ export function MediaBin() {
             if (event.key === "Enter") void addFromUrl();
           }}
         />
-        <Button variant="secondary" size="icon" onClick={() => void addFromUrl()} disabled={busy} aria-label="Add from link">
+        <Button
+          variant="secondary"
+          size="icon"
+          onClick={() => void addFromUrl()}
+          disabled={busy}
+          aria-label="Add from link"
+        >
           <Plus className="size-4" />
         </Button>
       </div>
@@ -126,7 +134,9 @@ export function MediaBin() {
                   type="button"
                   onClick={() => select({ kind: "clip", id: clip.id })}
                   className={`group flex w-full items-center gap-3 rounded-lg border p-2 text-left transition-colors ${
-                    active ? "border-primary bg-primary/10" : "border-border bg-secondary/40 hover:bg-secondary"
+                    active
+                      ? "border-primary bg-primary/10"
+                      : "border-border bg-secondary/40 hover:bg-secondary"
                   }`}
                 >
                   <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
@@ -170,13 +180,25 @@ export function MediaBin() {
         </div>
         {audioTrack ? (
           <div className="mt-2 flex items-center gap-2">
-            <span className="min-w-0 flex-1 truncate text-sm text-foreground">{audioTrack.name}</span>
-            <Button variant="ghost" size="icon" onClick={() => setAudioTrack(null)} aria-label="Remove audio track">
+            <span className="min-w-0 flex-1 truncate text-sm text-foreground">
+              {audioTrack.name}
+            </span>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setAudioTrack(null)}
+              aria-label="Remove audio track"
+            >
               <Trash2 className="size-4" />
             </Button>
           </div>
         ) : (
-          <Button variant="secondary" size="sm" className="mt-2 w-full" onClick={() => audioInput.current?.click()}>
+          <Button
+            variant="secondary"
+            size="sm"
+            className="mt-2 w-full"
+            onClick={() => audioInput.current?.click()}
+          >
             Add voiceover or music
           </Button>
         )}

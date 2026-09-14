@@ -120,8 +120,7 @@ export function PreviewPlayer({
 
   return (
     <div className="flex h-full flex-col gap-3 p-4">
-      <div className="relative flex-1 overflow-hidden rounded-xl border border-border bg-black">
-        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+      <div className="@container relative flex-1 overflow-hidden rounded-xl border border-border bg-black">
         <video ref={videoRef} playsInline className="size-full object-contain" />
         {!activeClip && (
           <div className="absolute inset-0 flex items-center justify-center text-sm text-muted-foreground">
@@ -197,7 +196,6 @@ export function PreviewPlayer({
           <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             Exported video
           </p>
-          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
           <video src={exportUrl} controls className="max-h-64 w-full rounded-md bg-black" />
         </div>
       )}

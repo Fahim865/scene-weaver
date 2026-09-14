@@ -29,7 +29,8 @@ export type AudioTrack = {
   clipVolume: number;
 };
 
-export type ExportStage = "idle" | "loading" | "trimming" | "concat" | "audio" | "subtitles" | "done" | "error";
+export type ExportStage =
+  "idle" | "loading" | "trimming" | "concat" | "audio" | "subtitles" | "done" | "error";
 
 export type ExportState = {
   stage: ExportStage;
@@ -68,7 +69,8 @@ const newId = () => Math.random().toString(36).slice(2, 10);
 
 export const clipLength = (clip: Clip) => Math.max(0, clip.trimEnd - clip.trimStart);
 
-export const totalDuration = (clips: Clip[]) => clips.reduce((sum, clip) => sum + clipLength(clip), 0);
+export const totalDuration = (clips: Clip[]) =>
+  clips.reduce((sum, clip) => sum + clipLength(clip), 0);
 
 export const useEditorStore = create<EditorState>((set) => ({
   clips: [],
@@ -79,10 +81,7 @@ export const useEditorStore = create<EditorState>((set) => ({
 
   addClip: (clip) =>
     set((state) => ({
-      clips: [
-        ...state.clips,
-        { ...clip, id: newId(), trimStart: 0, trimEnd: clip.duration },
-      ],
+      clips: [...state.clips, { ...clip, id: newId(), trimStart: 0, trimEnd: clip.duration }],
     })),
 
   removeClip: (id) =>
@@ -121,10 +120,12 @@ export const useEditorStore = create<EditorState>((set) => ({
     const id = newId();
     const end = Math.max(start + 2, 2);
     set((state) => ({
-      subtitles: ([
-        ...state.subtitles,
-        { id, text: "New subtitle", start, end, position: "bottom", size: 42 },
-      ] as Subtitle[]).sort((a, b) => a.start - b.start),
+      subtitles: (
+        [
+          ...state.subtitles,
+          { id, text: "New subtitle", start, end, position: "bottom", size: 42 },
+        ] as Subtitle[]
+      ).sort((a, b) => a.start - b.start),
       selection: { kind: "subtitle", id },
     }));
   },
