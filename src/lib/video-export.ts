@@ -61,9 +61,7 @@ export function buildAssFile(subtitles: Subtitle[]) {
       );
     }
     const text = sub.text.replace(/\r?\n/g, "\\N").replace(/[{}]/g, "");
-    events.push(
-      `Dialogue: 0,${assTime(sub.start)},${assTime(sub.end)},${name},,0,0,0,,${text}`,
-    );
+    events.push(`Dialogue: 0,${assTime(sub.start)},${assTime(sub.end)},${name},,0,0,0,,${text}`);
   }
 
   return [
@@ -165,14 +163,7 @@ export async function exportVideo({
       written.push(input);
 
       const duration = Math.max(0.1, clip.trimEnd - clip.trimStart);
-      const base = [
-        "-ss",
-        clip.trimStart.toFixed(3),
-        "-t",
-        duration.toFixed(3),
-        "-i",
-        input,
-      ];
+      const base = ["-ss", clip.trimStart.toFixed(3), "-t", duration.toFixed(3), "-i", input];
       const encode = [
         "-c:v",
         "libx264",
@@ -261,7 +252,8 @@ export async function exportVideo({
       stageIndex = clips.length + 1;
       onProgress(currentStage(0));
 
-      const ext = (audioTrack.name.includes(".") ? audioTrack.name.split(".").pop() : "mp3") ?? "mp3";
+      const ext =
+        (audioTrack.name.includes(".") ? audioTrack.name.split(".").pop() : "mp3") ?? "mp3";
       const trackFile = `track.${ext}`;
       await ffmpeg.writeFile(trackFile, await fetchFile(audioTrack.file ?? audioTrack.url));
       written.push(trackFile);
@@ -289,7 +281,9 @@ export async function exportVideo({
         written.push("mixed.mp4");
         current = "mixed.mp4";
       } else {
-        warnings.push("The extra audio track could not be mixed in, so the export keeps the original clip sound.");
+        warnings.push(
+          "The extra audio track could not be mixed in, so the export keeps the original clip sound.",
+        );
       }
     }
 
@@ -319,7 +313,9 @@ export async function exportVideo({
         written.push("subbed.mp4");
         current = "subbed.mp4";
       } else {
-        warnings.push("Subtitles could not be burned into the file, but they still show in the preview.");
+        warnings.push(
+          "Subtitles could not be burned into the file, but they still show in the preview.",
+        );
       }
     }
 

@@ -88,7 +88,12 @@ export function PropertiesPanel() {
           <p className="text-xs text-muted-foreground">
             Using {formatTime(clipLength(clip))} of {formatTime(clip.duration)}
           </p>
-          <Button variant="ghost" size="sm" className="text-destructive" onClick={() => removeClip(clip.id)}>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-destructive"
+            onClick={() => removeClip(clip.id)}
+          >
             <Trash2 className="size-4" /> Remove clip
           </Button>
         </div>
@@ -120,7 +125,9 @@ export function PropertiesPanel() {
             <Label className="text-xs text-muted-foreground">Position</Label>
             <Select
               value={subtitle.position}
-              onValueChange={(value) => updateSubtitle(subtitle.id, { position: value as SubtitlePosition })}
+              onValueChange={(value) =>
+                updateSubtitle(subtitle.id, { position: value as SubtitlePosition })
+              }
             >
               <SelectTrigger>
                 <SelectValue />
@@ -155,14 +162,16 @@ export function PropertiesPanel() {
 
       {!clip && !subtitle && (
         <p className="text-xs text-muted-foreground">
-          Select a clip or subtitle to edit it. Drag the purple edges of a clip to trim it, and the bar at
-          its bottom to reorder scenes.
+          Select a clip or subtitle to edit it. Drag the purple edges of a clip to trim it, and the
+          bar at its bottom to reorder scenes.
         </p>
       )}
 
       {audioTrack && (
         <div className="mt-auto space-y-4 rounded-lg border border-border bg-secondary/30 p-3">
-          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Audio mixer</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            Audio mixer
+          </p>
           <div className="space-y-2">
             <Label className="text-xs text-muted-foreground">
               {audioTrack.name} ({Math.round(audioTrack.volume * 100)}%)
