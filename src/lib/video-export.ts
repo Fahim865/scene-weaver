@@ -22,6 +22,8 @@ async function getFFmpeg(): Promise<FFmpegInstance> {
       ]);
       const ffmpeg = new FFmpeg();
       await ffmpeg.load({
+        // The worker is a module worker, so the ESM core is imported from a
+        // blob URL (a bundler-safe URL the dev server does not try to resolve).
         coreURL: await toBlobURL(CORE_URL, "text/javascript"),
         wasmURL: new URL(wasmAsset.url, window.location.origin).href,
       });
